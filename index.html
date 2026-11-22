@@ -84,6 +84,8 @@
   .ev .t{font-family:"Fraunces",Georgia,serif;font-variation-settings:"SOFT" 100,"WONK" 1;color:var(--red);font-size:26px;text-align:right;line-height:1.1}
   .ev h3{font-family:"DM Sans",sans-serif;font-variation-settings:normal;font-weight:600;text-transform:uppercase;letter-spacing:.12em;font-size:14px;color:var(--text);margin-top:4px}
   .ev p{margin:4px 0 0;color:var(--muted)}
+  .when{text-align:center;margin:6px auto 4px}
+  .hours{font-family:"Fraunces",Georgia,serif;font-variation-settings:"SOFT" 100,"WONK" 1;color:var(--red);font-size:clamp(44px,8vw,64px);line-height:1.1;margin-top:6px}
   .note{max-width:600px;margin:24px auto 0;text-align:center;border:1px solid var(--red-soft);border-radius:14px;padding:14px 18px;background:#fff}
   .note b{color:var(--red);letter-spacing:.1em;font-size:13px}
   .art{width:120px;margin:28px auto 0;opacity:.9}
@@ -160,7 +162,7 @@
   <section id="schedule"><div class="panel">
     <h2>Schedule</h2>
     <p class="kicker"><span data-f="dateLong"></span> · <span data-f="venueName"></span></p>
-    <div class="timeline" id="timeline"></div>
+    <div class="when"><div class="small">Join us from</div><div class="hours" data-f="partyHours"></div></div>
     <div class="note"><b>DRESS CODE:</b> <span data-f="dressCode"></span></div>
     <img class="art" src="img/cake.png" alt="" aria-hidden="true">
   </div></section>
@@ -180,7 +182,7 @@
       <div class="card">
         <div class="tag">Flying in</div>
         <h3>Airport</h3>
-        <p data-f="airport"></p>
+        <div id="airports"></div>
       </div>
       <div class="card">
         <div class="tag">Getting there</div>
@@ -235,19 +237,16 @@ const CONFIG = {
   venueAddress: "327 SW 2nd St, Fort Lauderdale, FL 33312",
   venueAddressFull: "327 SW 2nd St, Fort Lauderdale, FL 33312",
   dressCode: "[Cocktail chic — a pop of red welcome]",
-  schedule: [
-    { time: "6:00", title: "Welcome & cocktails", text: "[Champagne on arrival, mingling in the garden]" },
-    { time: "7:00", title: "Dinner", text: "[Dinner details]" },
-    { time: "8:00", title: "Toasts & cake", text: "[Cutting the cake, a few words from friends]" },
-    { time: "8:30", title: "Dance floor opens", text: "[Under the disco ball]" },
-    { time: "11:00", title: "Last dance", text: "[Send-off]" }
+  partyHours: "6 PM – 10 PM",
+  airports: [
+    { code: "FLL", name: "Fort Lauderdale–Hollywood International", text: "The closest airport, about a 10–15 minute drive to downtown." },
+    { code: "MIA", name: "Miami International", text: "More flight options, about a 40 minute drive." }
   ],
-  airport: "Fort Lauderdale–Hollywood International Airport (FLL) is the closest airport. [Add any tips, e.g. Miami (MIA) as a backup.]",
   parking: "[Parking details at the venue, or rideshare drop-off instructions]",
-  hotelNote: "[Room block details, if any]",
+  hotelNote: "A few favorites near the party",
   hotels: [
-    { name: "[Hotel name]", text: "[Distance to venue · booking code]", url: "" },
-    { name: "[Hotel name]", text: "[Distance to venue · booking code]", url: "" }
+    { tag: "Hotel", name: "Riverside Hotel Fort Lauderdale", text: "620 East Las Olas Boulevard, Fort Lauderdale, FL 33301<br>(954) 467-0671", url: "https://www.riversidehotel.com/" },
+    { tag: "Hotel", name: "Flow Hotel Fort Lauderdale", text: "221 Southwest 1st Avenue, Fort Lauderdale, FL 33301<br>(954) 824-9933", url: "https://www.flow.life/properties/fort-lauderdale" }
   ],
   registryNote: "Your presence is the best gift. If you'd like to give something, here are a few ideas.",
   registry: [
@@ -263,14 +262,12 @@ const CONFIG = {
 const $ = s => document.querySelector(s);
 document.querySelectorAll("[data-f]").forEach(el => { el.textContent = CONFIG[el.dataset.f] ?? ""; });
 
-// schedule
-$("#timeline").innerHTML = CONFIG.schedule.map(e =>
-  `<div class="ev"><div class="t">${e.time}</div><div><h3>${e.title}</h3><p>${e.text}</p></div></div>`).join("");
 
 // cards
 const cardHTML = (c, cta) => `<div class="card">${c.tag ? `<div class="tag">${c.tag}</div>` : ""}<h3>${c.name}</h3><p>${c.text}</p>
   <a class="btn" href="${c.url || "#"}" ${c.url ? 'target="_blank" rel="noopener"' : 'aria-disabled="true"'}>${c.url ? cta : "Link coming soon"}</a></div>`;
-$("#hotels").innerHTML = CONFIG.hotels.map(h => cardHTML(h, "Book")).join("");
+$("#airports").innerHTML = CONFIG.airports.map(a => `<p style="margin:10px 0 0"><b style="color:var(--red);letter-spacing:.06em">${a.code}</b> · ${a.name}<br><span style="color:var(--muted)">${a.text}</span></p>`).join("");
+$("#hotels").innerHTML = CONFIG.hotels.map(h => cardHTML(h, "View")).join("");
 $("#registryCards").innerHTML = CONFIG.registry.map(r => cardHTML(r, "View")).join("");
 
 // rsvp
