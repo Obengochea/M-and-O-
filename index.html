@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Odette & Madison — We Eloped Party</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,500;6..96,600&family=Courier+Prime:wght@400;700&family=Pinyon+Script&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --sky:#e9fbfd;
+    --sky-2:#d9f4f7;
+    --red:#c81b18;
+    --red-soft:rgba(200,27,24,.14);
+    --ink:#7a1210;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;background:var(--sky);color:var(--red)}
+  body{font-family:"Courier Prime",ui-monospace,monospace;font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased}
+  a{color:var(--red)}
+  img{display:block;max-width:100%}
+
+  /* wavy ribbon frame */
+  .frame{position:fixed;inset:10px;border:1.5px solid var(--red);border-radius:28px;pointer-events:none;z-index:0;opacity:.55}
+  .corner{position:fixed;width:74px;z-index:1;pointer-events:none}
+  .corner.tl{top:4px;left:4px}
+  .corner.tr{top:4px;right:4px;transform:scaleX(-1)}
+  @media (max-width:640px){.corner{width:52px}.frame{inset:6px;border-radius:20px}}
+
+  .wrap{position:relative;z-index:2;max-width:900px;margin:0 auto;padding:28px 26px 80px}
+
+  /* header + tabs */
+  header{text-align:center;padding-top:10px}
+  .names{letter-spacing:.32em;text-transform:uppercase;font-size:15px;display:flex;justify-content:center;gap:14px;align-items:center}
+  .star{display:inline-block;width:10px;height:10px;background:var(--red);clip-path:polygon(50% 0,62% 38%,100% 50%,62% 62%,50% 100%,38% 62%,0 50%,38% 38%)}
+  nav{display:flex;flex-wrap:wrap;justify-content:center;gap:6px 8px;margin:22px 0 6px}
+  nav a{font-family:"Courier Prime",monospace;text-transform:uppercase;letter-spacing:.18em;font-size:13px;text-decoration:none;padding:8px 14px;border:1.5px solid transparent;border-radius:999px;transition:background .2s,border-color .2s}
+  nav a:hover{border-color:var(--red-soft)}
+  nav a[aria-current="page"]{border-color:var(--red);background:#fff}
+
+  section{display:none;animation:fade .45s ease}
+  section.on{display:block}
+  @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+  h1,h2{font-family:"Bodoni Moda",serif;font-weight:500;text-transform:uppercase;line-height:.9;margin:0;letter-spacing:-.01em}
+  h2{font-size:clamp(44px,8vw,72px);text-align:center;margin:30px 0 8px}
+  .kicker{text-align:center;text-transform:uppercase;letter-spacing:.22em;font-size:13px;margin:0 0 30px}
+
+  /* home */
+  .hero{position:relative;text-align:center;margin-top:20px}
+  .hero h1{font-size:clamp(64px,13vw,124px)}
+  .party{width:min(520px,82%);margin:-6px auto 0}
+  .disco{position:absolute;right:2%;top:-14px;width:clamp(80px,15vw,140px);animation:sway 6s ease-in-out infinite;transform-origin:50% 0}
+  @keyframes sway{0%,100%{transform:rotate(-3deg)}50%{transform:rotate(3deg)}}
+  .candles{position:absolute;left:1%;top:60px;width:clamp(56px,10vw,96px)}
+  @media (max-width:640px){.candles{display:none}.disco{width:58px;top:-48px;right:6%}.hero{margin-top:46px}}
+
+  .infobar{display:grid;grid-template-columns:1fr 1.4fr 1fr;align-items:center;margin:34px auto 0;max-width:720px;text-align:center}
+  .infobar>div{padding:6px 14px}
+  .infobar>div+div{border-left:1.5px solid var(--red)}
+  .big{font-family:"Bodoni Moda",serif;font-size:52px;line-height:1}
+  .small{text-transform:uppercase;letter-spacing:.14em;font-size:13px}
+  .venue{font-weight:700;letter-spacing:.14em;text-transform:uppercase;font-size:16px}
+  @media (max-width:640px){.infobar{grid-template-columns:1fr}.infobar>div+div{border-left:0;border-top:1.5px solid var(--red);margin-top:10px;padding-top:14px}}
+
+  .photo{margin:46px auto 0;max-width:760px;padding:12px;background:#fff;border:1.5px solid var(--red);border-radius:6px;transform:rotate(-1.2deg);box-shadow:0 14px 30px -18px rgba(122,18,16,.45)}
+  .photo img{filter:grayscale(1) contrast(1.02);border-radius:2px}
+  .caption{font-family:"Pinyon Script",cursive;font-size:30px;text-align:center;margin-top:8px;color:var(--red)}
+
+  .countdown{display:flex;justify-content:center;gap:18px;margin:44px 0 0;flex-wrap:wrap}
+  .countdown div{min-width:82px;text-align:center;border:1.5px solid var(--red);border-radius:14px;padding:10px 6px;background:#fff}
+  .countdown b{display:block;font-family:"Bodoni Moda",serif;font-size:40px;font-weight:500;line-height:1.1}
+  .countdown span{text-transform:uppercase;letter-spacing:.14em;font-size:11px}
+
+  .story{max-width:560px;margin:40px auto 0;text-align:center}
+
+  /* schedule */
+  .timeline{max-width:620px;margin:0 auto;position:relative}
+  .timeline:before{content:"";position:absolute;left:112px;top:8px;bottom:8px;border-left:1.5px dashed var(--red)}
+  .ev{display:grid;grid-template-columns:96px 1fr;gap:34px;padding:16px 0;position:relative}
+  .ev:after{content:"";position:absolute;left:105px;top:24px;width:14px;height:14px;background:var(--red);clip-path:polygon(50% 0,62% 38%,100% 50%,62% 62%,50% 100%,38% 62%,0 50%,38% 38%)}
+  .ev .t{font-family:"Bodoni Moda",serif;font-size:28px;text-align:right;line-height:1.1}
+  .ev h3{margin:0;font-family:"Courier Prime",monospace;text-transform:uppercase;letter-spacing:.14em;font-size:16px}
+  .ev p{margin:4px 0 0;color:var(--ink)}
+  .cake{width:min(300px,70%);margin:30px auto 0}
+  .note{max-width:620px;margin:26px auto 0;text-align:center;border:1.5px solid var(--red);border-radius:14px;padding:14px 18px;background:#fff}
+
+  /* cards */
+  .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:18px}
+  .card{background:#fff;border:1.5px solid var(--red);border-radius:16px;padding:20px 20px 22px;position:relative}
+  .card h3{margin:0 0 6px;font-family:"Bodoni Moda",serif;font-weight:500;text-transform:uppercase;font-size:26px;line-height:1}
+  .card p{margin:6px 0;color:var(--ink)}
+  .card .tag{text-transform:uppercase;letter-spacing:.16em;font-size:11px;color:var(--red)}
+  .btn{display:inline-flex;align-items:center;gap:8px;margin-top:12px;font-family:"Courier Prime",monospace;font-weight:700;text-transform:uppercase;letter-spacing:.16em;font-size:13px;padding:11px 18px;border-radius:999px;border:1.5px solid var(--red);background:var(--red);color:#fff;text-decoration:none;cursor:pointer}
+  .btn.ghost{background:transparent;color:var(--red)}
+  .btn[aria-disabled="true"]{opacity:.45;pointer-events:none}
+  .glasses{width:min(220px,55%);margin:34px auto 0}
+
+  /* rsvp */
+  .rsvp{display:grid;grid-template-columns:1fr 1fr;gap:30px;align-items:center;max-width:820px;margin:0 auto}
+  .rsvp .photo{margin:0;transform:rotate(1.5deg)}
+  .rsvp-box{text-align:center}
+  .rsvp-box .deadline{font-family:"Bodoni Moda",serif;font-size:34px;line-height:1.05;margin:8px 0 14px}
+  @media (max-width:700px){.rsvp{grid-template-columns:1fr}}
+
+  footer{text-align:center;margin-top:60px;letter-spacing:.2em;text-transform:uppercase;font-size:12px}
+  footer img{width:90px;margin:0 auto 8px}
+  .toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%);background:var(--red);color:#fff;padding:10px 18px;border-radius:999px;font-size:13px;letter-spacing:.1em;opacity:0;transition:opacity .25s;z-index:9}
+  .toast.show{opacity:1}
+</style>
+</head>
+<body>
+<div class="frame" aria-hidden="true"></div>
+<img class="corner tl" src="img/bow.png" alt="" aria-hidden="true">
+<img class="corner tr" src="img/bow.png" alt="" aria-hidden="true">
+
+<div class="wrap">
+  <header>
+    <div class="names"><span>Odette</span><span class="star"></span><span>Madison</span></div>
+    <nav id="nav">
+      <a href="#home">Home</a>
+      <a href="#schedule">Schedule</a>
+      <a href="#travel">Travel</a>
+      <a href="#registry">Registry</a>
+      <a href="#rsvp">RSVP</a>
+    </nav>
+  </header>
+
+  <!-- HOME -->
+  <section id="home">
+    <div class="hero">
+      <img class="disco" src="img/disco.png" alt="">
+      <img class="candles" src="img/candles.png" alt="">
+      <h1>We<br>Eloped</h1>
+      <img class="party" src="img/party.png" alt="Party">
+    </div>
+
+    <div class="infobar">
+      <div><div class="big" data-f="dateDay"></div><div class="small" data-f="dateMonth"></div></div>
+      <div><div class="venue" data-f="venueName"></div><div class="small" data-f="venueAddress"></div></div>
+      <div><div class="small">Starts at</div><div class="big" data-f="time"></div></div>
+    </div>
+
+    <div class="countdown" id="countdown" aria-label="Countdown to the party">
+      <div><b id="cd-d">–</b><span>Days</span></div>
+      <div><b id="cd-h">–</b><span>Hours</span></div>
+      <div><b id="cd-m">–</b><span>Minutes</span></div>
+    </div>
+
+    <figure class="photo" style="margin-left:auto;margin-right:auto">
+      <img src="img/kiss.jpg" alt="Odette and Madison under the cherry blossoms">
+    </figure>
+    <div class="caption">just married, let's party</div>
+
+    <p class="story" data-f="story"></p>
+    <div style="text-align:center"><a class="btn" href="#rsvp">RSVP</a></div>
+  </section>
+
+  <!-- SCHEDULE -->
+  <section id="schedule">
+    <h2>Schedule</h2>
+    <p class="kicker"><span data-f="dateLong"></span> · <span data-f="venueName"></span></p>
+    <div class="timeline" id="timeline"></div>
+    <div class="note"><b>DRESS CODE:</b> <span data-f="dressCode"></span></div>
+    <img class="cake" src="img/cake.png" alt="">
+  </section>
+
+  <!-- TRAVEL -->
+  <section id="travel">
+    <h2>Travel</h2>
+    <p class="kicker">See you in Fort Lauderdale</p>
+    <div class="cards">
+      <div class="card">
+        <div class="tag">The venue</div>
+        <h3 data-f="venueName"></h3>
+        <p data-f="venueAddressFull"></p>
+        <a class="btn" id="mapLink" href="#" target="_blank" rel="noopener">Open in Maps</a>
+        <button class="btn ghost" id="copyAddr" type="button">Copy address</button>
+      </div>
+      <div class="card">
+        <div class="tag">Flying in</div>
+        <h3>Airport</h3>
+        <p data-f="airport"></p>
+      </div>
+      <div class="card">
+        <div class="tag">Getting there</div>
+        <h3>Parking & rides</h3>
+        <p data-f="parking"></p>
+      </div>
+    </div>
+    <h2 style="font-size:clamp(34px,6vw,48px);margin-top:46px">Where to stay</h2>
+    <p class="kicker" data-f="hotelNote"></p>
+    <div class="cards" id="hotels"></div>
+    <img class="glasses" src="img/glasses.png" alt="">
+  </section>
+
+  <!-- REGISTRY -->
+  <section id="registry">
+    <h2>Registry</h2>
+    <p class="kicker" data-f="registryNote"></p>
+    <div class="cards" id="registryCards"></div>
+  </section>
+
+  <!-- RSVP -->
+  <section id="rsvp">
+    <h2>RSVP</h2>
+    <p class="kicker">Kindly reply so we save you a spot on the dance floor</p>
+    <div class="rsvp">
+      <figure class="photo"><img src="img/hands.jpg" alt="Odette and Madison holding hands"></figure>
+      <div class="rsvp-box">
+        <div class="small">Please respond by</div>
+        <div class="deadline" data-f="rsvpBy"></div>
+        <a class="btn" id="rsvpBtn" href="#" target="_blank" rel="noopener">RSVP online</a>
+        <p style="margin-top:22px" data-f="rsvpAlt"></p>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <img src="img/bow.png" alt="" aria-hidden="true">
+    Odette & Madison · <span data-f="dateMonthShort"></span>
+  </footer>
+</div>
+<div class="toast" id="toast">Copied</div>
+
+<script>
+/* ===== Edit everything here ===== */
+const CONFIG = {
+  partyStart: "2027-02-27T18:00:00-05:00",
+  dateDay: "27",
+  dateMonth: "February 2027",
+  dateMonthShort: "02.27.2027",
+  dateLong: "Saturday, February 27, 2027",
+  time: "6PM",
+  venueName: "Emily's Garden",
+  venueAddress: "327 SW 2nd St, Fort Lauderdale, FL 33312",
+  venueAddressFull: "327 SW 2nd St, Fort Lauderdale, FL 33312",
+  story: "We said “I do” just the two of us — now we want to celebrate with the people we love most. Come for champagne, cake and a whole lot of dancing.",
+  dressCode: "[Cocktail chic — a pop of red welcome]",
+  schedule: [
+    { time: "6:00", title: "Welcome & cocktails", text: "[Champagne on arrival, mingling in the garden]" },
+    { time: "7:00", title: "Dinner", text: "[Dinner details]" },
+    { time: "8:00", title: "Toasts & cake", text: "[Cutting the cake, a few words from friends]" },
+    { time: "8:30", title: "Dance floor opens", text: "[Under the disco ball]" },
+    { time: "11:00", title: "Last dance", text: "[Send-off]" }
+  ],
+  airport: "Fort Lauderdale–Hollywood International Airport (FLL) is the closest airport. [Add any tips, e.g. Miami (MIA) as a backup.]",
+  parking: "[Parking details at the venue, or rideshare drop-off instructions]",
+  hotelNote: "[Room block details, if any]",
+  hotels: [
+    { name: "[Hotel name]", text: "[Distance to venue · booking code]", url: "" },
+    { name: "[Hotel name]", text: "[Distance to venue · booking code]", url: "" }
+  ],
+  registryNote: "Your presence is the best gift. If you'd like to give something, here are a few ideas.",
+  registry: [
+    { tag: "Registry", name: "[Store name]", text: "[A short note]", url: "" },
+    { tag: "Fund", name: "Honeymoon fund", text: "[A short note]", url: "" }
+  ],
+  rsvpBy: "[RSVP date]",
+  rsvpUrl: "",   // paste your RSVP form link here (Google Form, Zola, The Knot, etc.)
+  rsvpAlt: "Or text [name] at [phone]."
+};
+/* ================================ */
+
+const $ = s => document.querySelector(s);
+document.querySelectorAll("[data-f]").forEach(el => { el.textContent = CONFIG[el.dataset.f] ?? ""; });
+
+// schedule
+$("#timeline").innerHTML = CONFIG.schedule.map(e =>
+  `<div class="ev"><div class="t">${e.time}</div><div><h3>${e.title}</h3><p>${e.text}</p></div></div>`).join("");
+
+// cards
+const cardHTML = (c, cta) => `<div class="card">${c.tag ? `<div class="tag">${c.tag}</div>` : ""}<h3>${c.name}</h3><p>${c.text}</p>
+  <a class="btn" href="${c.url || "#"}" ${c.url ? 'target="_blank" rel="noopener"' : 'aria-disabled="true"'}>${c.url ? cta : "Link coming soon"}</a></div>`;
+$("#hotels").innerHTML = CONFIG.hotels.map(h => cardHTML(h, "Book")).join("");
+$("#registryCards").innerHTML = CONFIG.registry.map(r => cardHTML(r, "View")).join("");
+
+// rsvp
+const rb = $("#rsvpBtn");
+if (CONFIG.rsvpUrl) { rb.href = CONFIG.rsvpUrl; } else { rb.textContent = "RSVP link coming soon"; rb.setAttribute("aria-disabled","true"); }
+
+// maps + copy
+$("#mapLink").href = "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(CONFIG.venueName + ", " + CONFIG.venueAddressFull);
+$("#copyAddr").addEventListener("click", async () => {
+  try { await navigator.clipboard.writeText(CONFIG.venueAddressFull); toast("Address copied"); }
+  catch { toast(CONFIG.venueAddressFull); }
+});
+function toast(msg){ const t=$("#toast"); t.textContent=msg; t.classList.add("show"); clearTimeout(t._h); t._h=setTimeout(()=>t.classList.remove("show"),2200); }
+
+// countdown
+function tick(){
+  const ms = new Date(CONFIG.partyStart) - new Date();
+  if (ms <= 0) { $("#countdown").innerHTML = '<div style="min-width:240px"><b>Party time</b><span>See you on the dance floor</span></div>'; return; }
+  $("#cd-d").textContent = Math.floor(ms/864e5);
+  $("#cd-h").textContent = Math.floor(ms/36e5)%24;
+  $("#cd-m").textContent = Math.floor(ms/6e4)%60;
+}
+tick(); setInterval(tick, 30000);
+
+// tabs via hash
+const views = ["home","schedule","travel","registry","rsvp"];
+function route(){
+  const v = views.includes(location.hash.slice(1)) ? location.hash.slice(1) : "home";
+  views.forEach(id => document.getElementById(id).classList.toggle("on", id === v));
+  document.querySelectorAll("#nav a").forEach(a => { if (a.getAttribute("href") === "#"+v) a.setAttribute("aria-current","page"); else a.removeAttribute("aria-current"); });
+  window.scrollTo(0, 0);
+}
+addEventListener("hashchange", route); route();
+</script>
+</body>
+</html>
